@@ -1,0 +1,40 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerMovement : MonoBehaviour
+{
+    [SerializeField] private float speed;
+    public float Jump;
+    public bool isJumping;
+    private Rigidbody2D body;
+
+    private void Awake()
+    {
+        body = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        body.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, body.velocity.y);
+
+        if (Input.GetKey(KeyCode.Space) && isJumping == false )
+        body.velocity = new Vector2(body.velocity.x, speed);
+    }
+    private void OnCollision2D(Collision2D other)
+    {
+        if(other.GameObject.CompareTag("Ground"))
+        {
+            isJumping = false;
+        }
+    }
+
+    private void OnCollisionExit2D(OnCollision2D other)
+    {
+        if(other.GameObject.CompareTag("Ground"))
+        {
+            isJumping = true;
+        }
+    }
+
+} 
